@@ -9,7 +9,7 @@ use App\Http\Controllers\DashboardController;
 
 
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['prefix' => 'manager','middleware' => ['auth','manager']], function() {
 
     Route::get('/dashboard',[DashboardController::class,'DashboardPage'])->name('home');
     Route::get('/resetPassword',[UserController::class,'ResetPasswordPage']);

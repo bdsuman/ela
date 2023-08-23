@@ -17,9 +17,9 @@ class UserController extends Controller
         return view('auth.pages.login-page');
     }
 
-    // function RegistrationPage():View{
-    //     return view('auth.pages.registration-page');
-    // }
+    function RegistrationPage():View{
+        return view('auth.pages.registration-page');
+    }
     function SendOtpPage():View{
         return view('auth.pages.send-otp-page');
     }
@@ -62,35 +62,18 @@ class UserController extends Controller
 
     function UserLogin(Request $request){
         //dd($request->all());
-       /*$count=User::where('email','=',$request->input('email'))
-            ->where('password','=',$request->input('password'))
-            ->select('id')->first();
-
-       if($count!==null){
-           // User Login-> JWT Token Issue
-           $token=JWTToken::CreateToken($request->input('email'),$count->id);
-           return response()->json([
-               'status' => 'success',
-               'message' => 'User Login Successful',
-           ],200)->cookie('token',$token,60*24*30);
-       }
-       else{
-           return response()->json([
-               'status' => 'failed',
-               'message' => 'unauthorized'
-           ],200);
-
-       }*/
-
+       
        $data = [
-        'email' => $request->email,
-        'password' => $request->password
-    ];
+                'email' => $request->email,
+                'password' => $request->password
+               ];
 
     if (Auth::attempt($data,true)) {
+        $user_type=User::where('email','=',$request->input('email'))->first()->user_type;
         return response()->json([
             'status' => 'success',
             'message' => 'User Login Successful',
+            'user_type' => $user_type
         ],200);
         // return redirect()->route('home');
     } else {

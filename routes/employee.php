@@ -6,7 +6,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['prefix'=>'employee','middleware' => ['auth','employee']], function() {
 
     Route::get('/dashboard',[DashboardController::class,'DashboardPage'])->name('home');
     Route::get('/resetPassword',[UserController::class,'ResetPasswordPage']);
