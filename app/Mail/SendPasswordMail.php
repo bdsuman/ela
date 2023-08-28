@@ -9,18 +9,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OTPMail extends Mailable
+class SendPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $password;
     /**
      * Create a new message instance.
      */
-    public $otp;
-
-    public function __construct($otp)
+    public function __construct($password)
     {
-        $this->otp=$otp;
+        $this->password=$password;
     }
 
     /**
@@ -29,7 +27,7 @@ class OTPMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'O T P Mail',
+            subject: 'Send New Password Mail',
         );
     }
 
@@ -39,7 +37,7 @@ class OTPMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'auth.email.OTPMail',
+            view: 'auth.email.SendPasswordMail',
         );
     }
 

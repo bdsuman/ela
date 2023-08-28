@@ -4,6 +4,7 @@ use Exception;
 use App\Models\User;
 use App\Mail\OTPMail;
 use App\Helper\JWTToken;
+use App\Mail\SendPasswordMail;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,9 @@ class UserController extends Controller
     }
     function SendOtpPage():View{
         return view('auth.pages.send-otp-page');
+    }
+    function SendPasswordPage():View{
+        return view('auth.pages.send-password-page');
     }
     function VerifyOTPPage():View{
         return view('auth.pages.verify-otp-page');
@@ -86,6 +90,40 @@ class UserController extends Controller
 
     }
 
+    function SendPasswordMail(Request $request){
+
+        $email=$request->input('email');
+        $new_password=$this->generateUniqueString(8);
+        try{
+            $count=User::where('email','=',$email)->count();
+
+            if($count==1){
+                // OTP Email Address
+                Mail::to($email)->send(new SendPasswordMail($new_password));
+                // OTO Code Table Update
+                 User::where('email','=',$email)->update(['password'=>Hash::make($new_password)]);
+    
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'New Password has been send to your email !'
+                ],200);
+            }
+            else{
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'unauthorized'
+                ]);
+            }
+        }catch(\Exception $e){
+            return response()->json([
+                'status' => 'failed',
+                //'message' => $e->getMessage(),
+                'message' => 'Failed Try Again'
+            ]);
+        }
+       
+    }
+
     function SendOTPCode(Request $request){
 
         $email=$request->input('email');
@@ -110,33 +148,6 @@ class UserController extends Controller
             ]);
         }
     }
-
-    function VerifyOTP(Request $request){
-        $email=$request->input('email');
-        $otp=$request->input('otp');
-        $count=User::where('email','=',$email)
-            ->where('otp','=',$otp)->count();
-
-        if($count==1){
-            // Database OTP Update
-            User::where('email','=',$email)->update(['otp'=>'0']);
-
-            // Pass Reset Token Issue
-            $token=JWTToken::CreateTokenForSetPassword($request->input('email'));
-            return response()->json([
-                'status' => 'success',
-                'message' => 'OTP Verification Successful',
-            ],200)->cookie('token',$token,60*24*30);
-
-        }
-        else{
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'unauthorized'
-            ],200);
-        }
-    }
-
     function ResetPassword(Request $request){
         try{
             $email=$request->header('email');
@@ -196,6 +207,16 @@ class UserController extends Controller
                 'message' => 'Something Went Wrong',
             ],200);
         }
+    }
+    public function generateUniqueString($length = 6) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $string = '';
+        
+        for ($i = 0; $i < $length; $i++) {
+            $string .= $characters[random_int(0, strlen($characters) - 1)];
+        }
+        
+        return $string;
     }
 
 }
