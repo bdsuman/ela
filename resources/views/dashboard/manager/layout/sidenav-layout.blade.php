@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Event Management Author</title>
+    <title>Payroll Management Manager</title>
 
     <link rel="icon" type="image/x-icon" href="{{asset('/favicon.ico')}}" />
     <link href="{{asset('backend/css/bootstrap.css')}}" rel="stylesheet" />
@@ -57,10 +57,10 @@
                         <h6>{{ auth()->user()->firstName }}</h6>
                         <hr class="user-dropdown-divider  p-0"/>
                     </div>
-                    <a href="{{url('/userProfile')}}" class="side-bar-item">
+                    <a href="{{url('/manager/userProfile')}}" class="side-bar-item">
                         <span class="side-bar-item-caption">Profile</span>
                     </a>
-                    <a onclick="return confirm('Are You Sure??')" href="{{url("/logout")}}" class="side-bar-item">
+                    <a onclick="return confirm('Are You Sure??')" href="{{url("/manager/logout")}}" class="side-bar-item">
                         <span class="side-bar-item-caption">Logout</span>
                     </a>
                 </div>
@@ -72,19 +72,19 @@
 
 <div id="sideNavRef" class="side-nav-open">
 
-    <a href="{{url("/dashboard")}}" class="side-bar-item">
+    <a href="{{url("/manager/dashboard")}}" class="side-bar-item">
         <i class="bi bi-graph-up"></i>
         <span class="side-bar-item-caption">Dashboard</span>
     </a>
-    <a href="{{url("/categoryPage")}}" class="side-bar-item">
+    <a href="{{url("/manager/categoryPage")}}" class="side-bar-item">
         <i class="bi bi-list-nested"></i>
         <span class="side-bar-item-caption">Category</span>
     </a>
-    <a href="{{url("/eventPage")}}" class="side-bar-item">
+    <a href="{{url("/manager/eventPage")}}" class="side-bar-item">
         <i class="bi bi-calendar2-event"></i>
         <span class="side-bar-item-caption">Event</span>
     </a>
-    <a href="{{ url("/reportPage") }}" class="side-bar-item">
+    <a href="{{ url("/manager/reportPage") }}" class="side-bar-item">
         <i class="bi bi-file-earmark-bar-graph"></i>
         <span class="side-bar-item-caption">Report</span>
     </a>

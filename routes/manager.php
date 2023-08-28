@@ -4,7 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Manager\DashboardController;
 
 
 
@@ -13,7 +13,7 @@ Route::group(['prefix' => 'manager','middleware' => ['auth','manager']], functio
 
     Route::get('/dashboard',[DashboardController::class,'DashboardPage'])->name('home');
     Route::get('/resetPassword',[UserController::class,'ResetPasswordPage']);
-    Route::get('/userProfile',[UserController::class,'ProfilePage']);
+    Route::get('/userProfile',[DashboardController::class,'ProfilePage']);
    // User Logout
     Route::get('/logout',[UserController::class,'UserLogout']);
     Route::get('/categoryPage',[CategoryController::class,'CategoryPage']);
@@ -22,8 +22,9 @@ Route::group(['prefix' => 'manager','middleware' => ['auth','manager']], functio
    
 
     Route::post('/reset-password',[UserController::class,'ResetPassword']);
-    Route::get('/user-profile',[UserController::class,'UserProfile']);
-    Route::post('/user-update',[UserController::class,'UpdateProfile']);
+    Route::get('/user-profile',[DashboardController::class,'UserProfile']);
+    Route::post('/user-update',[DashboardController::class,'UpdateProfile']);
+    Route::post('/user-pass-update',[DashboardController::class,'UpdatePassword']);
 
     // Category API
     Route::post("/create-category",[CategoryController::class,'CategoryCreate']);
